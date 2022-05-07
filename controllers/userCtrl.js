@@ -1,15 +1,15 @@
-const Users = require('../models/userModel')
-const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
-const sendMail = require('./sendMail')
+const Users = require('../models/userModel'); //call MongoDB
+const bcrypt = require('bcrypt'); //encrypt our password
+const jwt = require('jsonwebtoken');
+const sendMail = require('./sendMail');
 
-const {google} = require('googleapis')
-const {OAuth2} = google.auth
-const fetch = require('node-fetch')
+const {google} = require('googleapis');
+const {OAuth2} = google.auth;
+const fetch = require('node-fetch');
 
-const client = new OAuth2(process.env.MAILING_SERVICE_CLIENT_ID)
+const client = new OAuth2(process.env.MAILING_SERVICE_CLIENT_ID);
 
-const {CLIENT_URL} = process.env
+const {CLIENT_URL} = process.env;
 
 const userCtrl = {
     register: async (req, res) => {  // async/await for proper error handling
@@ -20,10 +20,10 @@ const userCtrl = {
                 return res.status(400).json({msg: "Please fill in all fields."}) //end all 3 fields
 
             if(!validateEmail(email))
-                return res.status(400).json({msg: "Invalid emails."})
+                return res.status(400).json({msg: "Invalid emails."});
 
             const user = await Users.findOne({email})
-            if(user) return res.status(400).json({msg: "This email already exists."}) //makes model call to Mongo to see if email exists using findOne()
+            if(user) return res.status(400).json({msg: "This email already exists."}); //makes model call to Mongo to see if email exists using findOne()
 
             if(password.length < 6)
                 return res.status(400).json({msg: "Password must be at least 6 characters."}) //password required (not really secure)
@@ -31,7 +31,7 @@ const userCtrl = {
             const passwordHash = await bcrypt.hash(password, 12) //hash password using bycrypt
 
             const newUser = { //get new user info with hashed password
-                name, email, password: passwordHash
+                name, email, password: passwordHash;
             }
 
             const activation_token = createActivationToken(newUser) //get token with hashed user password
@@ -96,7 +96,7 @@ const userCtrl = {
             jwt.verify(rf_token, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
                 if(err) return res.status(400).json({msg: "Please login now!"})
 
-                const access_token = createAccessToken({id: user.id})
+                const access_token = createAccessToken({id: user.id});
                 res.json({access_token})
             })
         } catch (err) {
@@ -120,17 +120,17 @@ const userCtrl = {
     },
     resetPassword: async (req, res) => {
         try {
-            const {password} = req.body
-            console.log(password)
-            const passwordHash = await bcrypt.hash(password, 12)
+            const {password} = req.body;
+            console.log(password); //test
+            const passwordHash = await bcrypt.hash(password, 12);
 
             await Users.findOneAndUpdate({_id: req.user.id}, {
-                password: passwordHash
+                password: passwordHash;
             })
 
             res.json({msg: "Password successfully changed!"})
         } catch (err) {
-            return res.status(500).json({msg: err.message})
+            return res.status(500).json({msg: err.message});
         }
     },
     getUserInfor: async (req, res) => {
@@ -161,7 +161,7 @@ const userCtrl = {
     },
     updateUser: async (req, res) => {
         try {
-            const {name, avatar} = req.body
+            const {name, avatar} = req.body;
             await Users.findOneAndUpdate({_id: req.user.id}, {
                 name, avatar
             })
@@ -173,7 +173,7 @@ const userCtrl = {
     },
     updateUsersRole: async (req, res) => {
         try {
-            const {role} = req.body
+            const {role} = req.body;
 
             await Users.findOneAndUpdate({_id: req.params.id}, {
                 role
@@ -186,34 +186,34 @@ const userCtrl = {
     },
     deleteUser: async (req, res) => {
         try {
-            await Users.findByIdAndDelete(req.params.id)
+            await Users.findByIdAndDelete(req.params.id);
 
-            res.json({msg: "Deleted Success!"})
+            res.json({msg: "Deleted Success!"});
         } catch (err) {
             return res.status(500).json({msg: err.message})
         }
     },
     googleLogin: async (req, res) => {
         try {
-            const {tokenId} = req.body
+            const {tokenId} = req.body;
 
-            const verify = await client.verifyIdToken({idToken: tokenId, audience: process.env.MAILING_SERVICE_CLIENT_ID})
+            const verify = await client.verifyIdToken({idToken: tokenId, audience: process.env.MAILING_SERVICE_CLIENT_ID});
             
-            const {email_verified, email, name, picture} = verify.payload
+            const {email_verified, email, name, picture} = verify.payload;
 
-            const password = email + process.env.GOOGLE_SECRET
+            const password = email + process.env.GOOGLE_SECRET;
 
-            const passwordHash = await bcrypt.hash(password, 12)
+            const passwordHash = await bcrypt.hash(password, 12);
 
             if(!email_verified) return res.status(400).json({msg: "Email verification failed."})
 
-            const user = await Users.findOne({email})
+            const user = await Users.findOne({email});
 
             if(user){
-                const isMatch = await bcrypt.compare(password, user.password)
-                if(!isMatch) return res.status(400).json({msg: "Password is incorrect."})
+                const isMatch = await bcrypt.compare(password, user.password);
+                if(!isMatch) return res.status(400).json({msg: "Password is incorrect."});
 
-                const refresh_token = createRefreshToken({id: user._id})
+                const refresh_token = createRefreshToken({id: user._id});
                 res.cookie('refreshtoken', refresh_token, {
                     httpOnly: true,
                     path: '/user/refresh_token',
@@ -223,10 +223,10 @@ const userCtrl = {
                 res.json({msg: "Login success!"})
             }else{
                 const newUser = new Users({
-                    name, email, password: passwordHash, avatar: picture
+                    name, email, password: passwordHash, avatar: picture;
                 })
 
-                await newUser.save()
+                await newUser.save();
                 
                 const refresh_token = createRefreshToken({id: newUser._id})
                 res.cookie('refreshtoken', refresh_token, {
@@ -235,7 +235,7 @@ const userCtrl = {
                     maxAge: 7*24*60*60*1000 // 7 days
                 })
 
-                res.json({msg: "Login success!"})
+                res.json({msg: "Login success!"});
             }
 
 
@@ -290,7 +290,7 @@ const userCtrl = {
 
 
         } catch (err) {
-            return res.status(500).json({msg: err.message})
+            return res.status(500).json({msg: err.message});
         }
     }
 }
@@ -305,15 +305,15 @@ function validateEmail(email) {
 }
 
 const createActivationToken = (payload) => {
-    return jwt.sign(payload, process.env.ACTIVATION_TOKEN_SECRET, {expiresIn: '5m'})
+    return jwt.sign(payload, process.env.ACTIVATION_TOKEN_SECRET, {expiresIn: '5m'});
 }
 
 const createAccessToken = (payload) => {
-    return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '15m'})
+    return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '15m'});
 }
 
 const createRefreshToken = (payload) => {
-    return jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, {expiresIn: '7d'})
+    return jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, {expiresIn: '7d'});
 }
 
 module.exports = userCtrl
