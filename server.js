@@ -26,8 +26,8 @@ app.use('/api', require('./routes/movie-router'));
 // Connect to mongodb
 const URI = process.env.MONGODB_URL; //pass to .env file
 mongoose.connect(URI, {
-    //useCreateIndex: true,
-    //useFindAndModify: false,
+    //useCreateIndex: true, //comment out due to error
+    //useFindAndModify: false, //comment out due to error
     useNewUrlParser: true,
     useUnifiedTopology: true
 }, err => {
@@ -46,6 +46,6 @@ if(process.env.NODE_ENV === 'production'){
 */
 
 const PORT = process.env.PORT || 5000
-app.listen(PORT, () => {
+app.listen(PORT, () => { //create NodeJS Server
     console.log('Server is running on port', PORT) //listen port 5000 in the backend
 })
