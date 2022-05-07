@@ -1,4 +1,4 @@
-const cloudinary = require('cloudinary')
+const cloudinary = require('cloudinary') //upload picture to cloudinary
 const fs = require('fs')
 
 cloudinary.config({
@@ -19,13 +19,13 @@ const uploadCtrl = {
             }, async(err, result) => {
                 if(err) throw err;
 
-                removeTmp(file.tempFilePath)
+                removeTmp(file.tempFilePath);
 
-                res.json({url: result.secure_url})
+                res.json({url: result.secure_url});
             })
         
         } catch (err) {
-            return res.status(500).json({msg: err.message})
+            return res.status(500).json({msg: err.message});
         }
     }
 
@@ -34,7 +34,7 @@ const uploadCtrl = {
 
 const removeTmp = (path) => {
     fs.unlink(path, err => {
-        if(err) throw err
+        if(err) throw err;
     })
 }
 
