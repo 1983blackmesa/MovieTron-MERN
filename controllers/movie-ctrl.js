@@ -1,4 +1,4 @@
-const Movie = require('../models/movie-model')
+const Movie = require('../models/movie-model'); //require the movie model for MongoDB connection
 
 //Movie Creation function
 createMovie = (req, res) => {
@@ -15,7 +15,7 @@ createMovie = (req, res) => {
     const movie = new Movie(body)
 
     if (!movie) {
-        return res.status(400).json({ success: false, error: err }) //No movie entered
+        return res.status(400).json({ success: false, error: err });  //No movie entered
     }
 
     movie
@@ -25,14 +25,14 @@ createMovie = (req, res) => {
                 success: true,
                 id: movie._id,
                 message: 'Movie created!',
-            })
-        })
+            });
+        });
         .catch(error => {
             return res.status(400).json({
                 error,
                 message: 'Movie not created!',
-            })
-        })
+            });
+        });
 }
 
 //update Movie (Admin area)
@@ -53,10 +53,10 @@ updateMovie = async (req, res) => {
                 message: 'Movie not found!',
             })
         }
-        movie.name = body.name
-        movie.time = body.time
-        movie.rating = body.rating
-        movie.year = body.year
+        movie.name = body.name;
+        movie.time = body.time;
+        movie.rating = body.rating;
+        movie.year = body.year;
         movie
             .save()
             .then(() => {
@@ -94,7 +94,7 @@ deleteMovie = async (req, res) => {
 getMovieById = async (req, res) => {
     await Movie.findOne({ _id: req.params.id }, (err, movie) => {
         if (err) {
-            return res.status(400).json({ success: false, error: err })
+            return res.status(400).json({ success: false, error: err });
         }
 
         if (!movie) {
