@@ -27,12 +27,12 @@ createMovie = (req, res) => {
                 message: 'Movie created!',
             });
         });
-        .catch(error => {
-            return res.status(400).json({
-                error,
-                message: 'Movie not created!',
-            });
-        });
+        // .catch(error => {
+        //     return res.status(400).json({
+        //         error,
+        //         message: 'Movie not created!',
+        //     })
+        // })
 }
 
 //update Movie (Admin area)

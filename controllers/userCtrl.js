@@ -31,7 +31,7 @@ const userCtrl = {
             const passwordHash = await bcrypt.hash(password, 12) //hash password using bycrypt
 
             const newUser = { //get new user info with hashed password
-                name, email, password: passwordHash;
+                name, email, password: passwordHash
             }
 
             const activation_token = createActivationToken(newUser) //get token with hashed user password
@@ -125,7 +125,7 @@ const userCtrl = {
             const passwordHash = await bcrypt.hash(password, 12);
 
             await Users.findOneAndUpdate({_id: req.user.id}, {
-                password: passwordHash;
+                password: passwordHash
             })
 
             res.json({msg: "Password successfully changed!"})
@@ -223,7 +223,7 @@ const userCtrl = {
                 res.json({msg: "Login success!"})
             }else{
                 const newUser = new Users({
-                    name, email, password: passwordHash, avatar: picture;
+                    name, email, password: passwordHash, avatar: picture
                 })
 
                 await newUser.save();
