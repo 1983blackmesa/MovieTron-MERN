@@ -62,7 +62,7 @@ function Header() {
 
 
             <Link href to="/">
-                <a className="navbar-brand">MovieTron</a>
+                <a href className="navbar-brand">MovieTron</a>
             </Link>
             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
@@ -72,13 +72,13 @@ function Header() {
 
                 <ul className="navbar-nav p-1">
                     <li className="nav-item">
-                        <Link to="/about"><a className="nav-link"> About Us </a>
+                        <Link to="/about"><a href className="nav-link"> About Us </a>
                         </Link>
 
                     </li>
 
                     <li className="nav-item">
-                        <Link to="/contact"><a className="nav-link"> Contact Us </a>
+                        <Link to="/contact"><a href className="nav-link"> Contact Us </a>
                         </Link>
 
                     </li>
@@ -86,7 +86,7 @@ function Header() {
 
                         {
                             isLogged ? loggedRouter() :
-                                <Link to="/login"><a className="nav-link">Sign in </a>
+                                <Link to="/login"><a href className="nav-link">Sign in </a>
                                 </Link>
                         }
                     </li>

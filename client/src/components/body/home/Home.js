@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import './home.css'
+//import './home.css'
 import ReactTable from "react-table-6"; 
 import api from '../profile/api'
 
@@ -9,9 +9,20 @@ import 'react-table-6/react-table.css'
 
 
 const Wrapper = styled.div`
-    padding: 0 40px 40px 40px;
-`
+  font-family: arial;
+  font-size: 24px;
+  margin: 40px;
+  width: 950px;
+  height: 200px;
+  outline: dashed 1px black;
+  /* Setup */
+  position: relative;
 
+`
+const Center = styled.div`
+    border: 5px solid;
+    text-align: center;
+`
 
 
 class MoviesList extends Component {
@@ -41,11 +52,7 @@ class MoviesList extends Component {
         console.log('TCL: MoviesList -> render -> movies', movies)
 
         const columns = [
-            {
-                Header: 'ID',
-                accessor: '_id',
-                filterable: true,
-            },
+            
             {
                 Header: 'Name',
                 accessor: 'name',
@@ -74,8 +81,12 @@ class MoviesList extends Component {
         }
 
         return (    
-          
+        
+           
+               
             <Wrapper>
+            <Center>
+            Search Movie Database
                 {showTable && (
                     <ReactTable
                         data={movies}
@@ -84,9 +95,12 @@ class MoviesList extends Component {
                         defaultPageSize={10}
                         showPageSizeOptions={true}
                         minRows={0}
+                       
                     />
                 )}
+                </Center>
             </Wrapper>
+            
         )
     }
 }

@@ -5,6 +5,7 @@ import {dispatchLogin, fetchUser, dispatchGetUser} from './redux/actions/authAct
 
 import Header from './components/header/Header'
 import Body from './components/body/Body'
+import Footer from './components/footer/Footer'
 import axios from 'axios';
 
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -46,9 +47,15 @@ function App() {
      
         <Header />
         <Body />
+        <br/>
+        <br/>
+        <br/>
+        <Footer />
+        
         
 
       </div>
+     
       </Switch>
     </Router>
   );
